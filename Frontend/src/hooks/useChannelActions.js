@@ -1,6 +1,7 @@
 // src/Hooks/useChannelHooks.js
 import { useState, useEffect } from "react";
 import { createChannelApi, fetchChannelDataApi } from "../Api/channelApi";
+import { fetchUserData } from "../redux/api/authApi";
 
 // Hook for creating a channel
 
@@ -25,6 +26,14 @@ export const useChannelActions = () => {
       if (response.data && response.data._id) {
         setExistingChannelId(response.data._id); // Store the created channel ID
       }
+
+      console.log("response.data", response.data);
+      // Fetch updated user data with the populated channel ID
+      const userResponse = await fetchUserData(token); // Fetch the latest user data
+      if (userResponse.data && userResponse.data.channel) {
+        setExistingChannelId(userResponse.data.channel._id); // Update with channel ID
+      }
+      console.log("userResponse", userResponse);
 
       return response.data; // Return the response data
     } catch (err) {

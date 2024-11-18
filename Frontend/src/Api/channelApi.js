@@ -12,8 +12,9 @@ export const createChannelApi = async (data, token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    // console.log(response.data);
-    // console.log(response.data.data._id);
+    console.log("create channel ", response.data);
+    console.log("create channel ", response);
+    console.log("create channel id", response.data.data._id);
     return response.data; // Return successful response
   } catch (err) {
     // Suppress console error logs

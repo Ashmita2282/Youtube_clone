@@ -113,7 +113,7 @@ const me = async (req, res) => {
       "channel",
       "_id channelName description channelBanner"
     );
-
+    console.log(user);
     res.status(200).json({ success: true, data: user });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

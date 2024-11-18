@@ -17,9 +17,10 @@ const Channel = () => {
   const [editingVideoTitle, setEditingVideoTitle] = useState("");
 
   const location = useLocation();
-  const state = location.state || {};
 
-  const { channelBanner, channelName, description } = state;
+  const { channelName, channelBanner, description } = location.state || {}; // Safely extract data
+
+  console.log("channelBanner", channelBanner);
 
   // Handle adding a new video
   const handleAddVideo = () => {
