@@ -2,10 +2,10 @@ import axios from "axios";
 
 const API_BASE_URL = "http://localhost:4000/api";
 
-export const likeVideo = async (videoId, userId, token) => {
+export const likeVideo = async (videoId, userId, token, channelId) => {
   const response = await axios.post(
     `${API_BASE_URL}/video/${videoId}/like`,
-    { userId }, // Send userId in the body
+    { userId, channelId }, // Send both userId and channelId in the body
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -15,10 +15,10 @@ export const likeVideo = async (videoId, userId, token) => {
   return response.data;
 };
 
-export const dislikeVideo = async (videoId, userId, token) => {
+export const dislikeVideo = async (videoId, userId, token, channelId) => {
   const response = await axios.post(
     `${API_BASE_URL}/video/${videoId}/dislike`,
-    { userId }, // Send userId in the body
+    { userId, channelId }, // Send both userId and channelId in the body
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -28,7 +28,7 @@ export const dislikeVideo = async (videoId, userId, token) => {
   return response.data;
 };
 
-export const addComment = async (videoId, commentText, token, userId) => {
+export const addComment = async (videoId, commentText, token, userId, channelId) => {
   try {
     if (!videoId || typeof videoId !== "string") {
       throw new Error("Invalid video ID.");
@@ -38,27 +38,23 @@ export const addComment = async (videoId, commentText, token, userId) => {
       throw new Error("Comment text cannot be empty.");
     }
 
-    // Ensure that userId is passed as well
-    if (!userId) {
-      throw new Error("User ID is required.");
+    // Ensure that userId and channelId are passed as well
+    if (!userId || !channelId) {
+      throw new Error("User ID and Channel ID are required.");
     }
 
-    // Make the API request with Authorization header and userId in the body
     const response = await axios.post(
-      `${API_BASE_URL}/video/${videoId}/comments`, // Endpoint to post the comment
-      { userId, text: commentText.trim() }, // Pass userId and text in the body
+      `${API_BASE_URL}/video/${videoId}/comments`,
+      { userId, text: commentText.trim(), channelId }, // Include channelId in the request
       {
         headers: {
-          Authorization: `Bearer ${token}`, // Include the Authorization header with Bearer token
+          Authorization: `Bearer ${token}`,
         },
       }
     );
     return response.data;
   } catch (error) {
-    console.error(
-      "Error adding comment:",
-      error.response?.data || error.message
-    );
+    console.error("Error adding comment:", error.response?.data || error.message);
     throw error; // Propagate the error to the caller
   }
 };

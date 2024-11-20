@@ -1,5 +1,5 @@
 import React from "react";
-import useFetchVideos from "../hooks/useFetchVideos";
+import { useFetchVideos } from "../hooks/useFetchVideos";
 import VideoCard from "./VideoCard";
 import { Link, useOutletContext } from "react-router-dom"; // To access context passed from Home.jsx
 

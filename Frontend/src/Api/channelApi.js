@@ -12,9 +12,7 @@ export const createChannelApi = async (data, token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("create channel ", response.data);
-    console.log("create channel ", response);
-    console.log("create channel id", response.data.data._id);
+    
     return response.data; // Return successful response
   } catch (err) {
     // Suppress console error logs
@@ -43,7 +41,6 @@ export const fetchChannelDataApi = async (channelId, token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("data ", response.data.data);
     return response.data.data; // Assuming the channel data is under `data.data`
   } catch (err) {
     throw new Error(

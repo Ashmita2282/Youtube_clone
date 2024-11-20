@@ -66,7 +66,7 @@ import FilterButtons from "../components/FilterButtons"; // Assuming this handle
 
 const Home = () => {
   const { user } = useSelector((state) => state.auth); // Pull user state from Redux
-  console.log("hoem", user?.data);
+  ("hoem", user?.data);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");

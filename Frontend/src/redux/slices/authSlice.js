@@ -39,7 +39,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     token: getToken() || null, // Initialize with token from local storage if available
-    user: null,
+    user: JSON.parse(localStorage.getItem("userDetails")) || null,
     loading: false,
     error: null,
   },
@@ -47,7 +47,10 @@ const authSlice = createSlice({
     logout: (state) => {
       state.token = null;
       state.user = null;
+      state.error = null;
+
       removeToken(); // Clear token from local storage
+      localStorage.removeItem("userDetails");
     },
   },
   extraReducers: (builder) => {
@@ -55,6 +58,7 @@ const authSlice = createSlice({
       // Handle login actions
       .addCase(login.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
@@ -69,6 +73,7 @@ const authSlice = createSlice({
       // Handle fetching user data actions
       .addCase(getUserData.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
 
       .addCase(getUserData.fulfilled, (state, action) => {
@@ -86,6 +91,10 @@ const authSlice = createSlice({
     //   state.loading = false;
     //   state.user = action.payload; // Set user data
     //   state.error = null;
+    // })
+    // .addCase(getUserData.fulfilled, (state, action) => {
+    //   state.user = action.payload; // Fetch user data after login
+    //   localStorage.setItem("userDetails", JSON.stringify(action.payload));
     // })
   },
 });

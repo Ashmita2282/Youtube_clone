@@ -21,8 +21,6 @@ const CreateChannelModal = ({ showModal, toggleModal }) => {
 
     if (createdChannel) {
       setChannelDetails(createdChannel); // Save the response data (includes channelId)
-      console.log(createdChannel._id);
-      // toggleModal(); // Close the modal
     }
   };
 

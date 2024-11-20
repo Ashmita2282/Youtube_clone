@@ -27,13 +27,11 @@ export const useChannelActions = () => {
         setExistingChannelId(response.data._id); // Store the created channel ID
       }
 
-      console.log("response.data", response.data);
       // Fetch updated user data with the populated channel ID
       const userResponse = await fetchUserData(token); // Fetch the latest user data
       if (userResponse.data && userResponse.data.channel) {
         setExistingChannelId(userResponse.data.channel._id); // Update with channel ID
       }
-      console.log("userResponse", userResponse);
 
       return response.data; // Return the response data
     } catch (err) {

@@ -9,6 +9,8 @@ import {
   getComments,
   getAllVideos,
   deleteVideo,
+  getVideosByChannelId,
+  editVideo,
 } from "../controllers/videoController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 
@@ -34,6 +36,12 @@ router.post("/video/:id/comments", authMiddleware, addComment);
 // Get comments of a video by ID
 router.get("/video/:id/comments", getComments);
 
-router.delete("/video/:id/delete", deleteVideo);
+router.delete("/video/delete/:id", authMiddleware, deleteVideo);
+
+router.post("/channel/:id", authMiddleware, addVideo);
+
+router.get("/channel/:id", authMiddleware, getVideosByChannelId);
+
+router.put("/video/edit/:id", authMiddleware, editVideo);
 
 export default router;

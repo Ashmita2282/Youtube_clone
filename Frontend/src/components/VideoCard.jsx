@@ -12,9 +12,6 @@ const VideoCard = ({ video }) => {
       />
 
       {/* Video Player */}
-      {/* <video controls src={video.videoUrl} className="w-full h-40 object-cover">
-        Your browser does not support the video tag.
-      </video> */}
 
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-800">{video.title}</h3>

@@ -8,38 +8,54 @@ const useVideoActions = () => {
 
   // Get user and token from Redux store
   const { user, token } = useSelector((state) => state.auth);
-  // console.log("user videoAction", user?._id, "token videoAction", token);
+  const channelId = user?.data?.channel?._id; // Get channelId here
+
+  // Fetch comments for a given video
+  const fetchComments = async (videoId) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await axios.get(`/api/comments/${videoId}`);
+      setLoading(false);
+      return response.data; // Return the fetched comments
+    } catch (err) {
+      setLoading(false);
+      setError("Failed to load comments. Please try again later.");
+      throw err;
+    }
+  };
 
   const handleLike = async (videoId) => {
-    if (!token || !user?._id) {
+    const userId = user?.data?._id; // Validate userId
+
+    if (!token || !userId || !channelId) {
       alert("You need to log in to like a video.");
       return;
     }
 
     setLoading(true);
     try {
-      const response = await likeVideo(videoId, user?._id, token); // Use user.id as userId
+      const response = await likeVideo(videoId, userId, token, channelId); // Pass channelId here
       alert(response.message || "Video liked successfully.");
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-          err.message ||
-          "Failed to like the video."
-      );
+      setError(err.response?.data?.message || "Failed to like the video.");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDislike = async (videoId) => {
-    if (!token || !user?._id) {
+    const userId = user?.data?._id;
+
+    if (!token || !userId || !channelId) {
       alert("You need to log in to dislike a video.");
       return;
     }
 
     setLoading(true);
     try {
-      const response = await dislikeVideo(videoId, user._id, token); // Use user.id as userId
+      const response = await dislikeVideo(videoId, userId, token, channelId); // Pass channelId here
       alert(response.message || "Video disliked successfully.");
     } catch (err) {
       setError(err.response?.data?.message || "Failed to dislike the video.");
@@ -49,22 +65,30 @@ const useVideoActions = () => {
   };
 
   const handleAddComment = async (videoId, commentText) => {
-    // Assuming user._id contains the userId
-    const userId = user?._id; // Ensure this exists and is valid
-    console.log("User Id", userId);
-    if (!token || !userId) {
+    const userId = user?.data?._id;
+
+    if (!token || !userId || !channelId) {
       alert("You need to log in to add a comment.");
       return;
     }
-    console.log("token Id", userId);
+
+    if (!commentText.trim()) {
+      alert("Comment text cannot be empty.");
+      return;
+    }
 
     setLoading(true);
     try {
-      // Pass videoId, commentText, token, and userId to the addComment function
-      const response = await addComment(videoId, commentText, token, userId);
+      const response = await addComment(
+        videoId,
+        commentText,
+        token,
+        userId,
+        channelId
+      ); // Pass userId and channelId
       alert(response.message || "Comment added successfully.");
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to add the comment.");
+      setError(err.response?.data?.message || "Failed to add the comment.");
     } finally {
       setLoading(false);
     }
